@@ -6,10 +6,9 @@ const fs = require('fs');
 
 app.use(cors());
 
-
+let freeparkingspots = [];
 
 app.get('/', async function (req, res) {
-
     const response = await fetch(
         "https://fordkerbhack.azure-api.net/features?viewport=51.5535663,-0.1887717,51.5589623,-0.1788357",
         {
@@ -23,8 +22,8 @@ app.get('/', async function (req, res) {
     res.send(curbLR);
 });
 
-app.get('/livefeed', async function (req, res) {
-    let imageFile = fs.readFileSync('./livefeed.jpg');
+app.get('/livefeed_templewood_garden', async function (req, res) {
+    let imageFile = fs.readFileSync('./livefeed_templewood_garden.jpg');
     let encodedImg = Buffer.from(imageFile).toString('base64');
 
     const response = await fetch('https://vision.googleapis.com/v1/images:annotate?key=AIzaSyA8yFjZC5B556_Pkxjz2ltFDKTGxytns4M', {
@@ -51,7 +50,10 @@ app.get('/livefeed', async function (req, res) {
     });
 
     const imgData = await response.json();
-    res.send(imgData);
+
+    const freeparking = imgData.responses[0].textAnnotations.filter(annotation => annotation.description.length <= 6 && annotation.description.match(/kerbie|kerble|Kerbie|Kerble|Kerb/));
+
+    res.send(freeparking);
 });
 
 app.listen(3000)
