@@ -9,6 +9,7 @@ app.use(cors());
 
 
 app.get('/', async function (req, res) {
+
     const response = await fetch(
         "https://fordkerbhack.azure-api.net/features?viewport=51.5535663,-0.1887717,51.5589623,-0.1788357",
         {
