@@ -43,6 +43,13 @@ var ctx = canvas.getContext('2d');
 // if you want to preview the captured image,
 // attach the canvas to the DOM somewhere you can see it.
 
+//draw image to canvas. scale to target dimensions
+ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+//convert to desired file format
+var dataURI = canvas.toDataURL('image/jpeg'); // can also use 'image/png'
+
+
 
 app.get('/livefeed_templewood_garden', async function (req, res) {
     let imageFile = fs.readFileSync('./livefeed_templewood_garden.jpg');
