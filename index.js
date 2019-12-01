@@ -73,14 +73,18 @@ const updateLiveFeedData = async (objectId) => {
   const imgData = await response.json();
   console.log(imgData);
 
-  const freeparking = imgData.responses[0].textAnnotations.filter(annotation => annotation.description.length <= 6 && annotation.description.match(/kerbie|kerble|Kerbie|Kerble|Kerb/));
+  if (imgData.responses) {
+    const freeparking = imgData.responses[0].textAnnotations.filter(annotation => annotation.description.length <= 6 && annotation.description.match(/kerbie|kerble|Kerbie|Kerble|Kerb/));
 
-  freeparkingspots[objectId] = freeparking;
-  return `Found ${freeparking.length} free parking spots in ${objectId}`;
+    freeparkingspots[objectId] = freeparking;
+    return `Found ${freeparking.length} free parking spots in ${objectId}`;
+  }
+
+  return `--`;
 };
 
-setInterval(async () => {
-  console.log(await updateLiveFeedData(OBJECT_IDS.TEMPLEWOOD_GARDEN));
-}, 2000);
+// setInterval(async () => {
+//   console.log(await updateLiveFeedData(OBJECT_IDS.TEMPLEWOOD_GARDEN));
+// }, 2000);
 
 app.listen(3000)
